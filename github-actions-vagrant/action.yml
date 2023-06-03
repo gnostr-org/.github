@@ -1,0 +1,94 @@
+name: 'Vagrant-VirtualBox'
+description: 'Run CI in VirtualBox for GitHub Actions'
+inputs:
+  box:
+    description: 'the vagrant box name'
+    required: true
+  run:
+    description: 'the commands to run in vm'
+    required: true
+  mem:
+    description: 'the memory size of the vm'
+    required: false
+    default: '2048'
+  log:
+    description: 'the log level of vagrant'
+    required: false
+    default: 'info'
+  sync-type:
+    description: 'the type of synced_folder'
+    required: false
+    default: 'rsync'
+branding:
+  icon: 'activity'  
+  color: 'green'
+
+runs:
+  using: 'composite'
+  steps:
+  - run: |
+      COLOR_RED='\033[0;31m'          # Red
+      COLOR_GREEN='\033[0;32m'        # Green
+      COLOR_YELLOW='\033[0;33m'       # Yellow
+      COLOR_BLUE='\033[0;94m'         # Blue
+      COLOR_PURPLE='\033[0;35m'       # Purple
+      COLOR_OFF='\033[0m'             # Reset
+
+      die() {
+          printf '%b\n' "${COLOR_RED}💔  $*${COLOR_OFF}" >&2
+          exit 1
+      }
+
+      run() {
+          printf '%b\n' "${COLOR_PURPLE}==>${COLOR_OFF} ${COLOR_GREEN}$*${COLOR_OFF}"
+          eval "$*"
+      }
+
+      # https://www.vagrantup.com/docs/other/debugging
+      case ${{inputs.log}} in
+        info|debug|warn|error)
+            export VAGRANT_LOG=${{inputs.log}}
+            ;;
+        '') die "log attribute must not be empty." ;;
+        *)  die "unrecognized log level, reference: https://www.vagrantup.com/docs/other/debugging"
+      esac
+
+      # https://developer.hashicorp.com/vagrant/docs/other/environmental-variables#vagrant_cwd
+      VAGRANT_CWD=$(mktemp -d)
+
+      run cd "$VAGRANT_CWD"
+
+      printf '%s\n' "VAGRANT_CWD=$VAGRANT_CWD" >> $GITHUB_ENV
+
+      run vagrant --version
+
+      run vagrant init ${{inputs.box}}
+
+      echo 'set -e' > shell.sh
+      export -p | grep 'GITHUB_' >> shell.sh
+      echo "cd /home/vagrant/${GITHUB_REPOSITORY}" >> shell.sh
+      cat >> shell.sh <<'EOF'
+      run() {
+        printf "\033[0;35m==>\033[0m \033[0;32m%b\n\033[0m" "$*"
+        eval "$*"
+      }
+      
+      ${{inputs.run}}
+      EOF
+
+      cat > Vagrantfile <<EOF
+        Vagrant.configure("2") do |config|
+          config.vm.box = "${{inputs.box}}"
+          config.vm.provider "virtualbox" do |vb|
+            vb.memory = "${{inputs.mem}}"
+          end
+          config.vm.synced_folder "${GITHUB_WORKSPACE}", "/home/vagrant/${GITHUB_REPOSITORY}", type: "${{inputs.sync-type}}"
+          config.vm.provision "shell", path: "shell.sh"
+        end
+      EOF
+      
+      run cat Vagrantfile
+      run cat shell.sh
+      
+      run vagrant up --provision
+    shell: bash 
