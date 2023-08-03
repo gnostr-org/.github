@@ -80,36 +80,40 @@ export python_version_minor
 export python_version_patch
 export PYTHON_VERSION
 
-
+-:
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 default:help
 help:## 	print verbose help
-	@sed -n 's/^##//p' ${MAKEFILE_LIST} | sed -e 's/://'
-	@echo ""
-	@echo "autoreconf		autoreconf"
-	@echo "autogen-sh		run autogen.sh"
-	@echo "config    		run configure"
-	@echo "act       		act"
+	@sed -n 's/^### 	//p' ${MAKEFILE_LIST} | sed -e 's/://'
 
 report:## 	print env variables
+### 	report		additional help
 	@echo 'GITHUB_TOKEN=${GITHUB_TOKEN}'
 autoreconf:## 	autoreconf
+### 	autoreconf	additional help
 	@type -P autoconf || type -P brew && brew install autoconf
 	@type -P autoreconf && autoreconf || echo "install autoconf..." && echo "Try: 'brew install autoconf' on macOS - for example."
-autogen-sh:## 	autogen-sh
+autogen-sh:autoreconf config## 	autogen-sh:autoreconf config
+### 	autogen-sh	additional help
 	./autogen.sh
 	#./autogen.sh configure
 config:## 	config
+### 	config		additional help
 	@./autogen.sh configure
 	@./configure
 act:##	act
+### 	act		additional help
 	@$(MAKE) -f act.mk
 submodules:## 	git submodule update --init --recursive
+### 	submodules	additional help
 	type -P git && git submodule update --init --recursive || echo "install git..."
 tag:
+### 	tag		additional help
 	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
 	@git push -f --tags
 .ONESHELL:
 docker-start:## 	start docker
+### 	docker-start	additional help
 	test -d .venv || $(PYTHON3) -m virtualenv .venv
 	( \
 	   source .venv/bin/activate; pip install -U -q -r requirements.txt; \
@@ -130,6 +134,7 @@ docker-start:## 	start docker
 	)
 
 docker-install:## 	Download Docker.amd64.93002.dmg for MacOS Intel Compatibility
+### 	docker-install	additional help
 
 	@[[ '$(shell uname -s)' == 'Darwin' ]] && echo "is Darwin" || echo "not Darwin";
 	@[[ '$(shell uname -m)' == 'x86_64' ]] && echo "is x86_64" || echo "not x86_64";
@@ -154,6 +159,7 @@ docker-install:## 	Download Docker.amd64.93002.dmg for MacOS Intel Compatibility
 
 .PHONY: venv
 venv:## 	create python3 virtualenv .venv
+### 	venv		additional help
 	test -d .venv || \
 		$(PYTHON3) -m virtualenv .venv || \
 		$(PYTHON3) -m pip install -U virtualenv
@@ -167,7 +173,8 @@ venv:## 	create python3 virtualenv .venv
 	@echo ". .venv/bin/activate"
 	@echo "or:"
 	@echo "make test-venv"
-test-venv:## 	test virutalenv .venv
+venv-test:## 	test virutalenv .venv
+### 	venv-test	additional help
 	# insert test commands here
 	test -d .venv || $(PYTHON3) -m virtualenv .venv
 	( \
@@ -176,6 +183,9 @@ test-venv:## 	test virutalenv .venv
 	   pip install -U -q --upgrade pip; \
 	);
 
+push:## 	git push -f origin main:master
+### 	push		additional help
+	@git push -f origin main:master
 
 -include Makefile
 -include act.mk
