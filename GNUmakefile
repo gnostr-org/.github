@@ -38,13 +38,13 @@ endif
 export BIND
 
 ifeq ($(token),)
-GH_ACT_TOKEN                            :=$(shell cat ~/GH_ACT_TOKEN.txt)
+GITHUB_TOKEN                            :=$(shell cat ~/GITHUB_TOKEN.txt)
 else
-GH_ACT_TOKEN                            :=$(shell echo $(token))
+GITHUB_TOKEN                            :=$(shell echo $(token))
 endif
-export GH_ACT_TOKEN
+export GITHUB_TOKEN
 
-export $(cat ~/GH_ACT_TOKEN) && make act
+#export $(cat ~/GITHUB_TOKEN) && make act
 
 PYTHON                                  := $(shell which python)
 export PYTHON
@@ -91,7 +91,7 @@ help:## 	print verbose help
 	@echo "act       		act"
 
 report:## 	print env variables
-	@echo 'GH_ACT_TOKEN=${GH_ACT_TOKEN}'
+	@echo 'GITHUB_TOKEN=${GITHUB_TOKEN}'
 autoreconf:## 	autoreconf
 	@type -P autoconf || type -P brew && brew install autoconf
 	@type -P autoreconf && autoreconf || echo "install autoconf..." && echo "Try: 'brew install autoconf' on macOS - for example."
