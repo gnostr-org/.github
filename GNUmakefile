@@ -380,6 +380,9 @@ endif
 public:
 	. gnostr.org\:public.sh
 
+.PHONY:index.html
+index.html:
+	pandoc profile/README.md > index.html
 
 .ONESHELL:
 docker-start:
