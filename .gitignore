@@ -41,6 +41,6 @@ coverage
 tmp
 .pnpm-store
 .gnostr/lfs
-.gnostr/proxy
+.gnostr/org
 .nvmrc
 .gnostr
