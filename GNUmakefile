@@ -272,6 +272,14 @@ submodules:## 	submodules
 	# git submodule update --init --recursive
 	git submodule foreach --recursive "git reset --hard; git submodule update --init; git fetch --all --tags"
 
+.PHONY:public
+public:
+	. gnostr.org\:public.sh
+
+.PHONY:index.html
+index.html:
+	pandoc profile/README.md > index.html
+
 .ONESHELL:
 docker-start:
 ## docker-start
