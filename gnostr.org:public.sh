@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+gh repo list gnostr-org --limit 1000 | while read -r repo _; do
+  RESULT="${repo//gnostr-org/public}"
+  echo "cloning $repo into $RESULT"
+  gh repo clone "$repo" "$RESULT" -- -q 2>/dev/null || (
+    cd "$RESULT"
+    # Handle case where local checkout is on a non-main/master branch
+    # - ignore checkout errors because some repos may have zero commits,
+    # so no main or master
+    git checkout -q main 2>/dev/null || true
+    git checkout -q master 2>/dev/null || true
+    git pull -q
+  )
+done
