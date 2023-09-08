@@ -346,7 +346,23 @@ test-query:
 	@gnostr-query \
     -t gnostr \
     -t weeble \
-    -t wobble | gnostr-cat -u ws://127.0.0.1:6102
+    -t wobble | gnostr-cat -u ws://relay.gnostr.org:6102
+test-curl-gnostr-org:
+	@gnostr --sec $(shell gnostr-sha256) \
+    --envelope \
+    --content \
+    "$(shell curl -s wss://relay.gnostr.org:6102 | grep "<li>" | sed 's/<li>//' | sed 's/<\/li\>//')"
+test-query-gnostr-org:
+	@gnostr-query \
+    -t gnostr \
+    -t weeble \
+    -t wobble | gnostr-cat -u wss://relay.gnostr.org:6102
+
+test-github-gnostr-org:
+	@gnostr --sec $(shell gnostr-sha256) \
+    --envelope \
+    --content \
+    "$(shell curl -s https://github.gnostr.org | grep "<li>" | sed 's/<li>//' | sed 's/<\/li\>//')"
 
 -include Makefile
 -include venv.mk
