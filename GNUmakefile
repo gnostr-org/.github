@@ -376,6 +376,10 @@ endif
 
 
 
+.PHONY:public
+public:
+	. gnostr.org\:public.sh
+
 
 .ONESHELL:
 docker-start:
