@@ -126,6 +126,7 @@ export NVM_DIR
 PNPM_VERSION                            :=8.6.7
 export PNPM_VERSION
 
+PANDOC                                  :=$(shell which pandoc)
 #PACKAGE_MANAGER                         :=yarn
 #export PACKAGE_MANAGER
 #PACKAGE_INSTALL                         :=add
@@ -234,6 +235,9 @@ report:## 	report
 	@echo 'NODE_VERSION=${NODE_VERSION}'
 	@echo 'NODE_ALIAS=${NODE_ALIAS}'
 	@echo 'PNPM_VERSION=${PNPM_VERSION}'
+	@echo 'NVM_DIR=${NVM_DIR}'
+	@echo ''
+	@echo 'PANDOC=${PANDOC}'
 	@echo ''
 	@echo 'HOMEBREW=${HOMEBREW}'
 	@echo ''
@@ -271,6 +275,14 @@ submodules:## 	submodules
 ## submodules
 	# git submodule update --init --recursive
 	git submodule foreach --recursive "git reset --hard; git submodule update --init; git fetch --all --tags"
+
+.PHONY:public
+public:
+	. gnostr.org\:public.sh
+
+.PHONY:index.html
+index.html:
+	pandoc README.md > index.html
 
 .ONESHELL:
 docker-start:
