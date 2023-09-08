@@ -203,7 +203,10 @@ run-dev:run## 	run-dev
 run-production:## 	run-production
 	@npm run build && install .env build/ && cd build && pnpm install --prod && node server.js
 lynx-dump:
-	@type -P lynx && lynx -dump -nolist http://127.0.0.1:6102 || echo #&& \
+	@type -P lynx && lynx -dump -dont_wrap_pre -nolist http://127.0.0.1:6102 || echo #&& \
+    #make lynx-dump | jq -R
+lynx-dump-github-gnostr-org:
+	@type -P lynx >/tmp/github.gnostr.org.log&& lynx -dump -dont_wrap_pre -nolist https://github.gnostr.org | jq .[1].content | tr -ds \" \  || echo #&& \
     #make lynx-dump | jq -R
 
 install:pnpm env## 	install
