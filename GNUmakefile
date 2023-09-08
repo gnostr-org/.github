@@ -282,7 +282,7 @@ public:
 
 .PHONY:index.html
 index.html:
-	pandoc README.md > index.html
+	pandoc profile/README.md > index.html
 
 .ONESHELL:
 docker-start:
