@@ -182,8 +182,9 @@ env:
 	@echo -e "CACHE_VIEWS=false"                        >>.env
 	@echo -e "PROXY_URL=ws://127.0.0.1:6102"            >>.env
 	@echo RELAYS=$(RELAYS)                              >>.env
-	@git update-index --assume-unchanged .env
-	@git update-index --assume-unchanged APP_KEY
+	@echo "Try:"
+	@echo "git update-index --assume-unchanged .env"
+	@echo "git update-index --assume-unchanged APP_KEY"
 #@cat .env > .env.example
 .PHONY:pnpm
 pnpm:nvm
