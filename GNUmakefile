@@ -387,9 +387,10 @@ endif
 	bash -c "which rustup                     || echo "
 
 ## 	install gnostr-org proxy
-public:detect
+.ONESHELL:public
 .PHONY:public
-	. gnostr.org\:public.sh || echo   "
+public:
+	@bash ./gnostr.org\:public.sh || echo
 
 .PHONY:index.html
 index.html:
