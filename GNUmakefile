@@ -283,8 +283,7 @@ submodules:## 	submodules
 .PHONY:public/gnostr-act
 public/gnostr-act:
 	type -P gnostr-act || git clone https://github.com/gnostr-org/gnostr-act.git ./public/gnostr-act 2>/tmp/gnostr.org.log || echo
-	type -P gnostr-act || sudo su $(shell whoami) ./public/gnostr-act/install-gnostr-act
-	type -P gnostr-act && type -P go
+	type -P gnostr-act || sudo su $(shell whoami) ./public/gnostr-act/install-gnostr-act && type -P gnostr-act && type -P go || echo
 
 .ONESHELL:detect
 .PHONY:detect
