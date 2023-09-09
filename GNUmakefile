@@ -174,14 +174,14 @@ help:## 	verbose help
 	@sed -n 's/^## //p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 .ONESHELL:
 env:
-	@echo -e "PORT=6102"                                 >.env
+	@echo -e "PORT=8080"                                 >.env
 	@echo -e "HOST=0.0.0.0"                             >>.env
 	@echo -e "NODE_ENV=development"                     >>.env
 	@echo -e "APP_KEY=UgSS9o_p04BZ0duSOyJ1kz6TjlTXoOaE" >>.env
 	@echo -e "DRIVE_DISK=local"                         >>.env
 	@echo -e "SESSION_DRIVER=cookie"                    >>.env
 	@echo -e "CACHE_VIEWS=false"                        >>.env
-	@echo -e "PROXY_URL=ws://127.0.0.1:6102"            >>.env
+	@echo -e "PROXY_URL=wss://relay.gnostr.org"         >>.env
 	@echo RELAYS=$(RELAYS)                              >>.env
 	@echo "Try:"
 	@echo "git update-index --assume-unchanged .env"
