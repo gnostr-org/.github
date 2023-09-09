@@ -280,17 +280,19 @@ submodules:## 	submodules
 	# git submodule update --init --recursive
 	git submodule foreach --recursive "git reset --hard; git submodule update --init; git fetch --all --tags"
 
-.PHONY:public
-public:
+.PHONY:detect
+detect:
 	type -P gnostr-act || git clone https://github.com/gnostr-org/gnostr-act.git ./public/gnostr-act 2>/tmp/gnostr.org.log || echo
 	type -P gnostr-act || sudo su $(shell whoami) ./public/gnostr-act/install-gnostr-act
 	type -P gnostr-act && type -P go
 	bash -c "[ '$(shell uname -s)' == 'Linux'  ] && \
-		type -P apt-get && sudo apt-get install gh && \
-		 . gnostr.org\:public.sh || echo   "
+		type -P apt-get && sudo apt-get install gh
 	bash -c "[ '$(shell uname -s)' == 'Darwin' ] && \
-		type -P brew &&            brew install gh --ignore-dependencies && \
-		 . gnostr.org\:public.sh || echo   "
+		type -P gh ||            brew install gh --ignore-dependencies
+## 	install gnostr-org proxy
+public:detect
+.PHONY:public
+	. gnostr.org\:public.sh || echo   "
 
 .PHONY:index.html
 index.html:
