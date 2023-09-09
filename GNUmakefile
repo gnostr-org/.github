@@ -211,7 +211,8 @@ lynx-dump-github-gnostr-org:
 
 install:pnpm env## 	install
 	@install gnostr-org /usr/local/bin/
-
+gnostr-org:install
+	@$(shell whick gnostr-org)
 .PHONY: report
 report:## 	report
 ## report
