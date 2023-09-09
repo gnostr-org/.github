@@ -24,6 +24,7 @@ jobs:
   build:
     env:
       GNOSTR: "gnostr"
+      GH_TOKEN: ${{ github.token }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -77,10 +78,8 @@ jobs:
 
       - run: python3 -m pip install virtualenv
 
+      - run: V=1 ./install-gnostr-org
       - run: V=1 make public
-      - run: V=1 pushd public/gnostr && make detect && cmake .
-      - run: V=1 pushd public/gnostr && make gnostr
-      - run: V=1 pushd public/gnostr && make gnostr-all
 
       - name: Save deps
         id: cache-deps-save
