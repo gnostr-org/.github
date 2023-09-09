@@ -281,12 +281,18 @@ submodules:## 	submodules
 
 .PHONY:public
 public:
-	type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Linux'  ] && apt-get install gh
-	type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Darwin' ] && brew    install gh
+	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Linux'  ] && apt-get install gh
+	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Darwin' ] && brew    install gh
 
 .PHONY:index.html
 index.html:
 	pandoc profile/README.md > index.html
+
+.PHONY:profile/README.md
+profile/README.md:
+	gnostr --sec $(shell gnostr-sha256) -t $(shell gnostr-weeble) -t $(shell gnostr-wobble) -t $(shell gnostr-blockheight) --envelope --content "curl https://raw.githubusercontent.com/gnostr-org/.github/master/gnostr-org | bash" > profile/README.md
+.PHONY:profile
+profile:profile/README.md
 
 .ONESHELL:
 docker-start:
