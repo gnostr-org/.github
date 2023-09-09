@@ -376,7 +376,7 @@ test-github-gnostr-org:
 
 -include Makefile
 -include venv.mk
--include act.mk
+-include gnostr-act.mk
 
 # vim: set noexpandtab
 # vim: set setfiletype make
