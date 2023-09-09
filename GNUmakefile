@@ -280,6 +280,7 @@ submodules:## 	submodules
 	# git submodule update --init --recursive
 	git submodule foreach --recursive "git reset --hard; git submodule update --init; git fetch --all --tags"
 
+.ONESHELL:detect
 .PHONY:detect
 detect:
 	type -P gnostr-act || git clone https://github.com/gnostr-org/gnostr-act.git ./public/gnostr-act 2>/tmp/gnostr.org.log || echo
