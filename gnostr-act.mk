@@ -5,7 +5,7 @@ gnostr-static:##
 	@touch ~/GITHUB_TOKEN.txt
 	@export $(cat ~/GITHUB_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
 gnostr-docker-git-server:docker-start
-	@docker build . --tag gnostr.org:latest
+	@docker build . --tag gnostr.org:latest --no-cache
 	@docker run --detach \
   --name gnostr.org \
   --volume $(HOME):/home/$(shell whoami) \
