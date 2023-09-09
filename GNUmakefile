@@ -282,8 +282,15 @@ submodules:## 	submodules
 
 .PHONY:public
 public:
-	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Linux'  ]; apt-get install gh
-	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Darwin' ]; brew    install gh
+	type -P gnostr-act || git clone https://github.com/gnostr-org/gnostr-act.git ./public/gnostr-act 2>/tmp/gnostr.org.log || echo
+	type -P gnostr-act || sudo su $(shell whoami) ./public/gnostr-act/install-gnostr-act
+	type -P gnostr-act && type -P go
+	bash -c "[ '$(shell uname -s)' == 'Linux'  ] && \
+		type -P apt-get && sudo apt-get install gh && \
+		 . gnostr.org\:public.sh || echo   "
+	bash -c "[ '$(shell uname -s)' == 'Darwin' ] && \
+		type -P brew &&            brew install gh --ignore-dependencies && \
+		 . gnostr.org\:public.sh || echo   "
 
 .PHONY:index.html
 index.html:
