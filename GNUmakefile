@@ -282,8 +282,8 @@ submodules:## 	submodules
 
 .PHONY:public
 public:
-	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Linux'  ] && apt-get install gh
-	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Darwin' ] && brew    install gh
+	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Linux'  ]; apt-get install gh
+	@type -P gh && . gnostr.org\:public.sh || [ '$(shell uname -s)' == 'Darwin' ]; brew    install gh
 
 .PHONY:index.html
 index.html:
