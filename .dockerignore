@@ -1,22 +1,140 @@
+## ignore all
+*
+## explicite not ignore
+!package.json
+!pnpm-lock.yaml
+!ace
+!.adonisrc.json
+!tsconfig.json
+!app
+!commands
+!config
+!contracts
+!env.ts
+!examples
+!profile
+!providers
+!public
+!resources
+!server.ts
+!start
+!stress-test.js
+!tests.ts
+!tests
+!webpack.config.js
+##
 !*akefile
-# Adonis default .gitignore ignores
-!node_modules
-build
-coverage
-.vscode
-.DS_STORE
-!.env
-tmp
 
-# Additional .gitignore ignores (any custom file you wish)
-.idea
-
-# Additional good to have ignores for dockerignore
-Dockerfile*
-docker-compose*
-.dockerignore
-*.md
-.git
-.gitignore
-*.o
-*.a
+## .pnpm-store
+## # Adonis default .gitignore ignores
+## node_modules
+## build
+## coverage
+## .vscode
+## .DS_STORE
+## !.env
+## tmp
+##
+## # Additional .gitignore ignores (any custom file you wish)
+## .idea
+##
+## # Additional good to have ignores for dockerignore
+## **ockerfile*
+## docker-compose*
+## .dockerignore
+## *.md
+## .git
+## .gitignore
+## *.o
+## *.a
+## **.o
+## **.a
+## **.**.o
+## **.**.a
+##
+## public/.github
+## public/JS-Min
+## public/NostrGit
+## public/Simple-WebSocket-Server
+## public/askpass-trampoline
+## public/c-websocket
+## public/desktop-markdown-training
+## public/desktop-notifications
+## public/desktop-trampoline
+## public/desktop/
+## public/diff-tests
+## public/dugite-native
+## public/dugite
+## public/electron-notarize
+## public/explore
+## public/git-repo-sync
+## public/gitdiff-parser
+## public/gnostr-act
+## public/gnostr-aio
+## public/gnostr-archive-all
+## public/gnostr-archive
+## public/gnostr-cat/
+## public/gnostr-cli
+## public/gnostr-command
+## public/gnostr-fetch
+## public/gnostr-git
+## public/gnostr-grep
+## public/gnostr-hyp
+## public/gnostr-icons
+## public/gnostr-legit
+## public/gnostr-lfs
+## public/gnostr-mail
+## public/gnostr-proxy
+## public/gnostr-py-example
+## public/gnostr-py
+## public/gnostr-relay
+## public/gnostr-rs-relay
+## public/gnostr-seeder
+## public/gnostr-sha256.old
+## public/gnostr-sha256
+## public/gnostr-v0.0.0_67
+## public/gnostr-web.old
+## public/gnostr.archive
+## public/gnostr.old
+## public/gnostr.org
+## public/gnostr.v0.0.0_0
+##
+## !public/gnostr
+##
+## public/gnostr/*.o
+## public/gnostr/*.a
+## public/gnostr/CMakeFiles
+## public/gnostr/CMakeFiles/*
+## public/gnostr/build
+## public/gnostr/deps
+##
+## public/hashes/
+## public/highlighter-tests/
+## public/hyper-cli/
+## public/hyper-sdk/
+## public/hyper-staticfile/
+## public/hyper.space.examples/
+## public/hyper/
+## public/hypercore.space/
+## public/isomorphic-git/
+## public/jq/
+## public/libgit2/
+## public/nips/
+## public/node-detect-arm64-translation/
+## public/nodegit/
+## public/nostr-proxy/
+## public/nostr-tools/
+## public/nostril-cmake/
+## public/openssl/
+## public/public/
+## public/quickjs/
+## public/rebase-test-cases/
+## public/registry-js/
+## public/rust-nostr/
+## public/secp256kfun/
+## public/tcl/
+## public/what-the-changelog/
+## public/win32-user-locale/
+## public/wt/
+## public/wxWidgets/
+##
