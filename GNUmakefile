@@ -135,6 +135,13 @@ PANDOC                                  :=$(shell which pandoc)
 APP_KEY                                 :=$(shell cat APP_KEY)
 export APP_KEY
 
+WEEBLE                                  :=$(shell gnostr-weeble || echo "WEEBLE")
+export WEEBLE
+WOBBLE                                  :=$(shell gnostr-wobble || echo "WOBBLE")
+export WOBBLE
+BLOCKHEIGHT                             :=$(shell gnostr-blockheight || echo "BLOCKHEIGHT")
+export BLOCKHEIGHT
+
 -:
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 ## help
@@ -260,6 +267,10 @@ report:## 	report
 	@echo 'GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}'
 	@echo 'GIT_REPO_NAME=${GIT_REPO_NAME}'
 	@echo 'GIT_REPO_PATH=${GIT_REPO_PATH}'
+	@echo ''
+	@echo 'WEEBLE=${WEEBLE}'
+	@echo 'WOBBLE=${WOBBLE}'
+	@echo 'BLOCKHEIGHT=${BLOCKHEIGHT}'
 	@echo ''
 	@echo 'APP_KEY=${APP_KEY}'
 	@echo ''
