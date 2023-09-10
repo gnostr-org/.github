@@ -1,4 +1,6 @@
 FROM rust:1.68.0-alpine
+## we use 1.68 to test rustup default nightly tooling
+## in gnostr/deps/gnostr-cat/sha256/legit etc...
 
 ## gnostr-git
 ENV NO_REGEX=NeedsStartEnd
