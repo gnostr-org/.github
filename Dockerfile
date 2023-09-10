@@ -1,9 +1,29 @@
-FROM alpine:3.18.3
+FROM rust:1.68.0-alpine
+
+## gnostr-git
+ENV NO_REGEX=NeedsStartEnd
 
 RUN set -ex; \
     apk add --no-cache \
-        git=2.40.1-r0 \
-        openssh=9.3_p2-r0 \
+        git \
+        openssh \
+        alpine-sdk \
+        autoconf \
+        automake \
+        libtool \
+        openssl-dev \
+        zlib-dev \
+        linux-headers \
+        gcc \
+        sudo \
+        vim \
+        make \
+        python3 \
+        cmake \
+        npm \
+        bash \
+        curl \
+        github-cli \
     ;
 
 # Generate SSH host keys
@@ -49,7 +69,17 @@ RUN set -eux; \
 COPY docker-entrypoint.sh /
 COPY 10-setup.sh ${DOCKER_ENTRYPOINT_DIR}
 
-EXPOSE 22
+EXPOSE 22 2222 6102 8080
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["touch", "/root/GITHUB_TOKEN.txt"]
+
+WORKDIR /srv/git/public/gnostr
+CMD ["make", "gnostr"]
+CMD ["make", "gnostr-install"]
+
+WORKDIR /srv/git
+CMD ["git","config", "--global", "--add", "safe.directory", "/srv/git"]
+
 CMD ["/usr/sbin/sshd", "-D"]
