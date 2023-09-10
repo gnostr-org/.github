@@ -123,3 +123,7 @@ public/win32-user-locale/
 public/wt/
 public/wxWidgets/
 
+## gnostr-act
+go1.21.0.darwin-amd64.tar.gz
+go1.21.0.linux-amd64.tar.gz
+
