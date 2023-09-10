@@ -1,30 +1,85 @@
-ARG NODE_IMAGE=node:16.13.1-alpine
+FROM rust:1.68.0-alpine
 
-ARG PNPM_VERSION=v6.16.0
-ENV PNPM_VERSION=v6.16.0
-FROM $NODE_IMAGE AS base
-RUN apk --no-cache add dumb-init curl python3 make gcc g++ git make
-RUN mkdir -p /home/node/app && chown node:node /home/node/app
-WORKDIR /home/node/app
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-USER node
-RUN mkdir tmp
+## gnostr-git
+ENV NO_REGEX=NeedsStartEnd
 
-FROM base AS dependencies
-COPY --chown=node:node ./package.json ./
-COPY --chown=node:node ./pnpm-lock.yaml ./
-RUN pnpm install
-COPY --chown=node:node . .
+RUN set -ex; \
+    apk add --no-cache \
+        git \
+        openssh \
+        alpine-sdk \
+        autoconf \
+        automake \
+        libtool \
+        openssl-dev \
+        zlib-dev \
+        linux-headers \
+        gcc \
+        sudo \
+        vim \
+        make \
+        python3 \
+        cmake \
+        npm \
+        bash \
+        curl \
+        github-cli \
+    ;
 
-FROM dependencies AS build
-RUN node ace build --production --ignore-ts-errors
+# Generate SSH host keys
+RUN ssh-keygen -A
 
-FROM base AS production
-ENV NODE_ENV=production
-ENV PORT=$PORT
-ENV HOST=0.0.0.0
-COPY --chown=node:node ./package*.json ./
-RUN pnpm install --prod
-COPY --chown=node:node --from=build /home/node/app/build .
-EXPOSE $PORT
-CMD [ "dumb-init", "node", "server.js" ]
+# Define variables
+ENV GIT_USER=git \
+    GIT_GROUP=git
+ENV GIT_HOME=/home/${GIT_USER}
+ENV SSH_AUTHORIZED_KEYS_FILE=${GIT_HOME}/.ssh/authorized_keys \
+    GIT_REPOSITORIES_PATH=/srv/git
+
+# Create the git user and enable login by assigning a simple password
+# Note that BusyBox implementation of `adduser` differs from Debian's
+# and therefore options behave slightly differently
+RUN set -eux; \
+    addgroup "${GIT_GROUP}"; \
+    adduser \
+        --gecos "Git User" \
+        --ingroup "${GIT_GROUP}" \
+        --disabled-password \
+        --shell "$(which git-shell)" \
+        "${GIT_USER}" ; \
+    echo "${GIT_USER}:12345" | chpasswd
+
+# Restrict git user to git commands
+# See `git-shell(1)`
+COPY git-shell-commands ${GIT_HOME}/git-shell-commands
+RUN set -eux; \
+    cd ${GIT_HOME}/git-shell-commands; \
+    cmds="ls mkdir rm vi"; \
+    for c in $cmds; do \
+        ln -s $(which $c) .; \
+    done
+
+# Delete Alpine welcome message
+RUN rm /etc/motd
+
+# Set up entrypoint script and directory
+ENV DOCKER_ENTRYPOINT_DIR=/docker-entrypoint.d
+RUN set -eux; \
+    mkdir ${DOCKER_ENTRYPOINT_DIR}
+COPY docker-entrypoint.sh /
+COPY 10-setup.sh ${DOCKER_ENTRYPOINT_DIR}
+
+EXPOSE 22 2222 6102 8080
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["touch", "/root/GITHUB_TOKEN.txt"]
+
+WORKDIR /srv/git/public/gnostr
+CMD ["make", "gnostr"]
+CMD ["make", "gnostr-install"]
+
+WORKDIR /srv/git
+CMD ["git","config", "--global", "--add", "safe.directory", "/srv/git"]
+
+CMD ["/usr/sbin/sshd", "-D"]
