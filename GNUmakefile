@@ -142,6 +142,12 @@ export WOBBLE
 BLOCKHEIGHT                             :=$(shell gnostr-blockheight || echo "BLOCKHEIGHT")
 export BLOCKHEIGHT
 
+ifneq ($(port),)
+PORT :=$(port)
+else
+PORT =8080
+endif
+export PORT
 -:
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 ## help

@@ -6,6 +6,7 @@ services:
     restart: always
     build:
       context: .
+      dockerfile: org.dockerfile
       target: dependencies
     ports:
       - ${PORT}:${PORT}
@@ -13,7 +14,14 @@ services:
     env_file:
       - .env
     volumes:
-      - ./:/home/node/app
-      # Uncomment the below line if you developing on MacOS
-      #- /home/node/app/node_modules
+    - type: bind
+      source: ${HOME}
+      target: /home
+      source: .
+      target: /home/node/app
+      source: ./node_modules
+      target: /home/node/app/node_modules
+      ## MacOS
+      source: ${HOME}/Library/pnpm/store
+      target: /home/node/app/.pnpm-store
     command: dumb-init node ace serve --watch --node-args="--inspect=0.0.0.0"
