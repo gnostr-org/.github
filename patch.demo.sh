@@ -8,7 +8,7 @@ declare UTC_SECS
 UTC_SECS=$(date +%s)
 
 declare REPO_PATH
-REPO_PATH=$PWD/$BRANCH/$UTC_SECS
+REPO_PATH=$REPO/$BRANCH/$UTC_SECS
 echo $REPO_PATH;
 
 declare FILES
