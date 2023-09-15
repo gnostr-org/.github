@@ -38,7 +38,7 @@ for td in .gnostr/ ; do
         for f in $PATCHES; do
 
             git apply --allow-empty  <(cat $f)
-            gnostr-legit . -p 00000 -m "$(date +%s)/$(pwd | grep -o "[^/]*$")" | gnostr-relays
+            gnostr-legit . -p 00000 -m "$(date +%s)/$(pwd | grep -o "[^/]*$")" | gnostr-relays | $(grep "OK" || echo 'working...')
 
         done
     done
