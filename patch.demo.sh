@@ -57,7 +57,7 @@ for td in .gnostr/ ; do
 
         for f in $PATCHES; do
 
-            touch $REPO_PATH
+            mkdir -p $REPO_PATH
             cat $f | jq -rM .content > /tmp/gnostr-patch.log
             git apply --allow-empty  <(cat $f)
 
