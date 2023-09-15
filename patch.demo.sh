@@ -36,7 +36,7 @@ for td in .gnostr/ ; do
         ## tre $d
         gnostr-list-patches
         for f in $PATCHES; do
-
+            cat $f
             git apply --allow-empty  <(cat $f)
             gnostr-legit . -p 00000 -m "$(date +%s)/$(pwd | grep -o '[^/]*$')" | gnostr-cat -u wss://relay.damus.io | $(grep 'OK') || echo "working..."
 
