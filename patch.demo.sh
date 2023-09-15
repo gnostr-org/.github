@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 declare REPO
-REPO=$(pwd | grep -o '[^/]*$')
+REPO=../$(pwd | grep -o '[^/]*$')/.gnostr
+mkdir -p $REPO
 declare BRANCH
 BRANCH=$(git branch --show-current)
 declare UTC_SECS
