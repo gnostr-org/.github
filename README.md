@@ -8,6 +8,14 @@
 
 </center></html>
 
+--
+
+$```
+cargo install gnostr-cli
+```
+
+--
+
 ###### nevent1qqstxe9972fwq0pphc0uq2cgn7u2lqr3udm4sg7z4ae29pr5h2tzaycpz3mhxue69uhhyetvv9ujuerpd46hxtnfdu4jpvuc
 
 ```json
