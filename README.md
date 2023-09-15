@@ -11,7 +11,7 @@
 ---
 
 $ ```
-cargo install gnostr-cli
+ cargo install gnostr-cli
 ```
 
 ---
