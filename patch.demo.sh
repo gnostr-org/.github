@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 declare REPO
-REPO=../$(pwd | grep -o '[^/]*$')/.gnostr
+REPO=$(pwd | grep -o '[^/]*$')
 mkdir -p $REPO
 declare BRANCH
 BRANCH=$(git branch --show-current)
 declare UTC_SECS
 UTC_SECS=$(date +%s)
 
-declare REPO_PATH
-REPO_PATH=$REPO/$BRANCH/$UTC_SECS
-echo $REPO_PATH;
+declare REMOTE_PATH
+REMOTE_PATH=$REPO/$BRANCH/$UTC_SECS
+echo $REMOTE_PATH;
 
 declare FILES
 declare PATCHES
@@ -57,7 +57,10 @@ for td in .gnostr/ ; do
 
         for f in $PATCHES; do
 
-            mkdir -p $REPO_PATH
+            echo "git remote add $REMOTE_PATH $PWD/$REMOTE_PATH"
+            # exit
+            git clone . .gnostr/$REMOTE_PATH
+            git remote add $REMOTE_PATH .gnostr/$REMOTE_PATH
             cat $f | jq -rM .content
             cat $f | jq -rM .content >/tmp/gnostr-patch.log
             git apply --allow-empty  <(cat $f)
