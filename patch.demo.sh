@@ -38,7 +38,7 @@ for td in .gnostr/ ; do
         for f in $PATCHES; do
 
             git apply --allow-empty  <(cat $f)
-            gnostr-legit . -p 00000 -m "$(echo date +%s)"
+            gnostr-legit . -p 00000 -m "$(echo date +%s)" | gnostr-relays
 
         done
     done
