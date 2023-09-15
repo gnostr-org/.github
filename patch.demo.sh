@@ -58,7 +58,8 @@ for td in .gnostr/ ; do
         for f in $PATCHES; do
 
             mkdir -p $REPO_PATH
-            cat $f | jq -rM .content > /tmp/gnostr-patch.log
+            cat $f | jq -rM .content
+            cat $f | jq -rM .content >/tmp/gnostr-patch.log
             git apply --allow-empty  <(cat $f)
 
             ## -m "$(date +%s)/$(pwd | grep -o '[^/]*$')/$(git branch --show-current)" | \
