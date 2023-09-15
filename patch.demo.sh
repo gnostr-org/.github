@@ -60,9 +60,9 @@ for td in .gnostr/ ; do
             cat $f | jq -rM .content > /tmp/gnostr-patch.log
             git apply --allow-empty  <(cat $f)
 
+            ## -m "$(date +%s)/$(pwd | grep -o '[^/]*$')/$(git branch --show-current)" | \
             gnostr-legit . \
                 -p 00000 \
-                ## -m "$(date +%s)/$(pwd | grep -o '[^/]*$')/$(git branch --show-current)" | \
                 -m "$REPO_PATH" | \
                 gnostr-cat -u wss://relay.damus.io | \
                 $(grep 'OK') || echo "working..."
