@@ -123,3 +123,18 @@ public/win32-user-locale/
 public/wt/
 public/wxWidgets/
 
+go1.21.0.darwin-amd64.tar.gz
+
+public/.github-private/
+public/agregore-nodegit/
+public/archiveweb.page/
+public/electron-template/
+public/gnostr-crud/
+public/gnostr-ios/
+public/gnostr-nodegit/
+public/gnostr-scripts/
+public/gnostr-web/
+public/gnostr-webrtc/
+public/homebrew-public/
+public/ndk/
+public/nostream/
